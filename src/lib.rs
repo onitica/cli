@@ -10,7 +10,7 @@
        html_favicon_url = "http://www.rust-lang.org/favicon.ico",
        html_root_url = "http://fengsp.github.io/cli/")]
 #![deny(non_camel_case_types)]
-#![feature(collections, convert, libc)]
+#![feature(collections, convert, libc, slice_concat_ext)]
 extern crate libc;
 extern crate time;
 extern crate getopts;

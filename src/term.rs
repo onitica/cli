@@ -15,7 +15,7 @@ use std::fs::File;
 use tempdir::TempDir;
 
 use libc;
-use libc::funcs::bsd44::ioctl;
+use libc::ioctl;
 use time;
 
 pub use self::Color::{
@@ -217,7 +217,7 @@ fn build_prompt_text(text: &str, suffix: &str, show_default: bool,
 
 fn get_prompt_input(prompt_text: &str, hide_input: bool) -> String {
     print!("{}", prompt_text);
-    let mut input = String::new(); 
+    let mut input = String::new();
     io::stdin().read_line(&mut input).ok().expect("Failed to read line");
     return input.trim_right_matches("\n").to_string();
 }
@@ -239,7 +239,7 @@ pub fn prompt(text: &str, default: Option<&str>, hide_input: bool, confirmation:
     let mut prompt_input: String;
     loop {
         prompt_input = get_prompt_input(&prompt_text, hide_input);
-        if prompt_input != String::from_str("") {
+        if prompt_input != "".to_owned() {
             break
         } else if default.is_some() {
             return default.unwrap().to_string();
@@ -252,7 +252,7 @@ pub fn prompt(text: &str, default: Option<&str>, hide_input: bool, confirmation:
     let mut confirm_input: String;
     loop {
         confirm_input = get_prompt_input("Repeat for confirmation: ", hide_input);
-        if confirm_input != String::from_str("") {
+        if confirm_input != "".to_owned() {
             break
         }
     }
@@ -298,7 +298,7 @@ struct WinSize {
     ws_ypixel: libc::c_ushort,  // vertical size, pixels
 }
 
-const TIOCGWINSZ: i32  = 0x40087468;
+const TIOCGWINSZ: u64  = 0x40087468;
 
 /// Returns the current size of the terminal in the form
 /// `(width, height)` in columns and rows, usage example:
@@ -493,7 +493,7 @@ impl ProgressBar {
         if last_line_width > line_width {
             let mut clear_string = "".to_string();
             for _ in (0..last_line_width - line_width) {
-                clear_string = clear_string + " ";    
+                clear_string = clear_string + " ";
             }
             io::stdout().write_all(clear_string.as_bytes()).unwrap();
         }
@@ -584,7 +584,7 @@ impl Editor {
         let mut edited_text = String::new();
         edited_file.read_to_string(&mut edited_text).unwrap();
         fs::remove_file(&filepath).unwrap();
-        
+
         return edited_text;
     }
 }

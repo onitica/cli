@@ -48,7 +48,7 @@ impl HelpFormatter {
     /// Writes a paragraph into the internal buffer.
     pub fn write_paragraph(&mut self) {
         if !self.buffer.is_empty() {
-            self.buffer.push(String::from_str("\n"));
+            self.buffer.push("\n".to_owned());
         }
     }
 
@@ -88,7 +88,7 @@ impl HelpFormatter {
             indent.push_str(" ");
         }
         self.write(wrap_text(text, text_width, &indent, &indent));
-        self.write(String::from_str("\n"));
+        self.write("\n".to_owned());
     }
 
     /// Writes a usage line.
@@ -97,12 +97,12 @@ impl HelpFormatter {
         let prefix_len = prefix.len();
         self.write(prefix);
         let text_width = max(self.width - self.current_indent - prefix_len, 10);
-        let mut indent = String::from_str(" ");
+        let mut indent = " ".to_owned();
         for _ in (0..prefix_len) {
             indent.push_str(" ");
         }
         self.write(wrap_text(args, text_width, " ", &indent));
-        self.write(String::from_str("\n"));
+        self.write("\n".to_owned());
     }
 
     /// Get buffer contents.

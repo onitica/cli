@@ -8,7 +8,6 @@ use std::path::Path;
 use std::slice::SliceConcatExt;
 
 use getopts;
-
 use types::{Params, CommandCallback};
 use types::{Options, Argument};
 use formatting::HelpFormatter;
